@@ -6,7 +6,10 @@ const createProductIntoDB = async (payload: TProduct) => {
   return result;
 };
 
-const getAllProductIntoDB = async (payload: TProduct) => {};
+const getAllProductIntoDB = async () => {
+  const result = await Product.find();
+  return result;
+};
 
 export const productServices = {
   createProductIntoDB,
