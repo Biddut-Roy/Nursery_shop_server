@@ -15,6 +15,8 @@ app.get('/', (req: Request, res: Response) => {
   res.send('server Is a Starting');
 });
 
+// Global Error Handler
+
 app.use((req: Request, res: Response, next: NextFunction) => {
   return res.status(httpStatus.NOT_FOUND).json({
     success: false,
