@@ -3,6 +3,7 @@ const app: Application = express();
 import cors from 'cors';
 import httpStatus from 'http-status';
 import router from './app/route';
+import globalErrorHandler from './app/middlsware/globalErrorHandler';
 
 // parser
 app.use(express.json());
@@ -16,6 +17,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // Global Error Handler
+app.use(globalErrorHandler);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   return res.status(httpStatus.NOT_FOUND).json({
