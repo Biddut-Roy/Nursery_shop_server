@@ -22,7 +22,7 @@ const createProduct = catchAsync(async (req, res, next) => {
 });
 
 const getProduct = catchAsync(async (req, res, next) => {
-  const result = await productServices.getAllProductIntoDB();
+  const result = await productServices.getAllProductIntoDB(req.query);
 
   // function generate response
   sendResponse(res, {
