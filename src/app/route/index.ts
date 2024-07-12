@@ -6,11 +6,11 @@ const router = Router();
 
 const modelRouter = [
   {
-    path: 'product',
+    path: '/product',
     route: productRoute,
   },
   {
-    path: 'category',
+    path: '/category',
     route: categoryRoute,
   },
 ];
