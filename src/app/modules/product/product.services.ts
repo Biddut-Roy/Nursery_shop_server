@@ -1,5 +1,4 @@
 import httpStatus from 'http-status';
-import QueryBuilder from '../../builder/QueryBuilder';
 import { productSearchableField } from './product.constant';
 import { TProduct } from './product.interfaces';
 import Product from './product.model';
@@ -14,6 +13,11 @@ const getAllProductIntoDB = async (query: Record<string, unknown>) => {
   try {
     const { search, filter, sort, page, limit, fields } = query;
 
+    let quer = {};
+    if (filter) {
+      quer.category = filter;
+    }
+
     let mongooseQuery = Product.find();
 
     // Search
@@ -23,7 +27,7 @@ const getAllProductIntoDB = async (query: Record<string, unknown>) => {
 
     // Filter
     if (filter) {
-      mongooseQuery = mongooseQuery.find(filter);
+      mongooseQuery = mongooseQuery.find(quer);
     }
 
     // Sort
@@ -52,7 +56,13 @@ const getAllProductIntoDB = async (query: Record<string, unknown>) => {
   }
 };
 
+const deleteProductIntoDB = async (id: string) => {
+  const result = await Product.findOneAndDelete(id);
+  return result;
+};
+
 export const productServices = {
   createProductIntoDB,
   getAllProductIntoDB,
+  deleteProductIntoDB,
 };
