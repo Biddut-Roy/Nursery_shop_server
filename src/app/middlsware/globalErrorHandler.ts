@@ -12,7 +12,7 @@ import handleCastError from '../errors/handelCastError';
 import AppError from '../errors/appError';
 
 interface ErrorSource {
-  path: string;
+  path: string | number;
   message: string;
 }
 

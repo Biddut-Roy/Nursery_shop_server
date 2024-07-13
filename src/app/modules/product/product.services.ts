@@ -1,6 +1,5 @@
 import httpStatus from 'http-status';
-import { productSearchableField } from './product.constant';
-import { TProduct } from './product.interfaces';
+import { QueryFilter, TIQuery, TProduct } from './product.interfaces';
 import Product from './product.model';
 import AppError from '../../errors/appError';
 
@@ -9,11 +8,11 @@ const createProductIntoDB = async (payload: TProduct) => {
   return result;
 };
 
-const getAllProductIntoDB = async (query: Record<string, unknown>) => {
+const getAllProductIntoDB = async (query: TIQuery) => {
   try {
     const { search, filter, sort, page, limit, fields } = query;
 
-    let quer = {};
+    let quer: QueryFilter = {};
     if (filter) {
       quer.category = filter;
     }
@@ -48,6 +47,7 @@ const getAllProductIntoDB = async (query: Record<string, unknown>) => {
     }
 
     const result = await mongooseQuery.exec();
+    // const result = await Product.find();
 
     return result;
   } catch (error) {
@@ -57,8 +57,6 @@ const getAllProductIntoDB = async (query: Record<string, unknown>) => {
 };
 
 const deleteProductIntoDB = async (id: string) => {
-  console.log(id);
-
   const result = await Product.findByIdAndDelete(id);
   return result;
 };
@@ -78,9 +76,15 @@ const updateProductIntoDB = async (payload: TProduct) => {
   return result;
 };
 
+const allProductIntoDB = async () => {
+  const result = await Product.find();
+  return result;
+};
+
 export const productServices = {
   createProductIntoDB,
   getAllProductIntoDB,
   deleteProductIntoDB,
   updateProductIntoDB,
+  allProductIntoDB,
 };

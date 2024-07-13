@@ -2,6 +2,8 @@ import httpStatus from 'http-status';
 import { catchAsync } from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendrespons';
 import { productServices } from './product.services';
+import { ParsedQs } from 'qs';
+import AppError from '../../errors/appError';
 
 const createProduct = catchAsync(async (req, res, next) => {
   const result = await productServices.createProductIntoDB(req.body);
@@ -28,20 +30,43 @@ const getProduct = catchAsync(async (req, res, next) => {
 });
 
 const deleteProduct = catchAsync(async (req, res, next) => {
-  const id: string = req.query.id;
-  const result = await productServices.deleteProductIntoDB(id);
+  const id: string | string[] | ParsedQs | ParsedQs[] | undefined =
+    req.query.id;
+
+  if (typeof id === 'string') {
+    const result = await productServices.deleteProductIntoDB(id);
+    return sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Product is Deleted successfully',
+      data: result,
+    });
+  }
+  if (Array.isArray(id)) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Multiple IDs are not supported',
+    );
+  } else if (id && typeof id === 'object') {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Invalid ID format');
+  } else {
+    throw new AppError(httpStatus.BAD_REQUEST, 'ID is required');
+  }
+});
+
+const updateProduct = catchAsync(async (req, res, next) => {
+  const result = await productServices.updateProductIntoDB(req?.body);
 
   // function generate response
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Product is Deleted successfully',
+    message: 'Product is Update successfully',
     data: result,
   });
 });
-
-const updateProduct = catchAsync(async (req, res, next) => {
-  const result = await productServices.updateProductIntoDB(req?.body);
+const allProduct = catchAsync(async (req, res, next) => {
+  const result = await productServices.allProductIntoDB();
 
   // function generate response
   sendResponse(res, {
@@ -57,4 +82,5 @@ export const productController = {
   getProduct,
   deleteProduct,
   updateProduct,
+  allProduct,
 };

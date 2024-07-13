@@ -8,3 +8,16 @@ export interface TProduct {
   image: string;
   quantity: number;
 }
+
+// Define the Query interface
+export interface TIQuery {
+  search?: string;
+  filter?: string;
+  sort?: string;
+  page?: string;
+  limit?: string;
+  fields?: string;
+}
+export type QueryFilter = {
+  category?: string;
+};
