@@ -57,7 +57,24 @@ const getAllProductIntoDB = async (query: Record<string, unknown>) => {
 };
 
 const deleteProductIntoDB = async (id: string) => {
-  const result = await Product.findOneAndDelete(id);
+  console.log(id);
+
+  const result = await Product.findByIdAndDelete(id);
+  return result;
+};
+
+const updateProductIntoDB = async (payload: TProduct) => {
+  const id = payload._id;
+  const data = {
+    category: payload.category,
+    title: payload.title,
+    price: payload.price,
+    description: payload.description,
+    rating: payload.rating,
+    image: payload.image,
+    quantity: payload.quantity,
+  };
+  const result = await Product.findByIdAndUpdate(id, { data });
   return result;
 };
 
@@ -65,4 +82,5 @@ export const productServices = {
   createProductIntoDB,
   getAllProductIntoDB,
   deleteProductIntoDB,
+  updateProductIntoDB,
 };

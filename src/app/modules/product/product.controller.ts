@@ -28,9 +28,10 @@ const getProduct = catchAsync(async (req, res, next) => {
 });
 
 const deleteProduct = catchAsync(async (req, res, next) => {
-  const result = await productServices.deleteProductIntoDB(req.body.id);
+  const id: string = req.query.id;
+  const result = await productServices.deleteProductIntoDB(id);
 
-  //function generate response
+  // function generate response
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -39,8 +40,21 @@ const deleteProduct = catchAsync(async (req, res, next) => {
   });
 });
 
+const updateProduct = catchAsync(async (req, res, next) => {
+  const result = await productServices.updateProductIntoDB(req?.body);
+
+  // function generate response
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Product is Update successfully',
+    data: result,
+  });
+});
+
 export const productController = {
   createProduct,
   getProduct,
   deleteProduct,
+  updateProduct,
 };
