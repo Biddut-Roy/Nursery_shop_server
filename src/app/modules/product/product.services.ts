@@ -80,6 +80,10 @@ const allProductIntoDB = async () => {
   const result = await Product.find();
   return result;
 };
+const singleProductIntoDB = async (id: string) => {
+  const result = await Product.findById(id);
+  return result;
+};
 
 export const productServices = {
   createProductIntoDB,
@@ -87,4 +91,5 @@ export const productServices = {
   deleteProductIntoDB,
   updateProductIntoDB,
   allProductIntoDB,
+  singleProductIntoDB,
 };
