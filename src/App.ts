@@ -4,9 +4,6 @@ import cors from 'cors';
 import httpStatus from 'http-status';
 import router from './app/route';
 import globalErrorHandler from './app/middlsware/globalErrorHandler';
-import config from './app/config';
-import Stripe from 'stripe';
-const stripe = new Stripe(config.stripe_secret_key as string);
 
 // parser
 app.use(express.json());
