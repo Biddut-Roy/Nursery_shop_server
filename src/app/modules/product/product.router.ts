@@ -9,5 +9,6 @@ router.get('/all', productController.allProduct);
 router.delete('/delete', productController.deleteProduct);
 router.patch('/update', productController.updateProduct);
 router.get('/single/:id', productController.singleProduct);
+router.patch('/payment-update', productController.paymentProductUpdate);
 
 export const productRoute = router;

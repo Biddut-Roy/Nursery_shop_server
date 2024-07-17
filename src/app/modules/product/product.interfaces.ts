@@ -21,3 +21,8 @@ export interface TIQuery {
 export type QueryFilter = {
   category?: string;
 };
+
+export interface TProductUpdateInfo {
+  _id: string;
+  QAT: number;
+}

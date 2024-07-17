@@ -1,5 +1,10 @@
 import httpStatus from 'http-status';
-import { QueryFilter, TIQuery, TProduct } from './product.interfaces';
+import {
+  QueryFilter,
+  TIQuery,
+  TProduct,
+  TProductUpdateInfo,
+} from './product.interfaces';
 import Product from './product.model';
 import AppError from '../../errors/appError';
 
@@ -80,6 +85,34 @@ const singleProductIntoDB = async (id: string) => {
   const result = await Product.findById(id);
   return result;
 };
+const paymentProductUpdateIntoDB = async (data: TProductUpdateInfo[]) => {
+  try {
+    for (const update of data) {
+      // Find the current document
+      const product = await Product.findById(update._id);
+
+      if (product) {
+        if (product.quantity == null) {
+          console.warn(
+            `Product with _id ${update._id} has a null or undefined quantity`,
+          );
+          continue;
+        }
+
+        // Update the quantity
+        product.quantity -= update.QAT;
+
+        const result = await product.save();
+
+        return result;
+      } else {
+        console.log(`Product with _id ${update._id} not found`);
+      }
+    }
+  } catch (error: unknown) {
+    return error;
+  }
+};
 
 export const productServices = {
   createProductIntoDB,
@@ -88,4 +121,5 @@ export const productServices = {
   updateProductIntoDB,
   allProductIntoDB,
   singleProductIntoDB,
+  paymentProductUpdateIntoDB,
 };

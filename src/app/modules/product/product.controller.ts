@@ -91,6 +91,18 @@ const singleProduct = catchAsync(async (req, res, next) => {
   }
 });
 
+const paymentProductUpdate = catchAsync(async (req, res, next) => {
+  const data = req.body;
+  const result = await productServices.paymentProductUpdateIntoDB(data);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Single Product is retrieved successfully',
+    data: result,
+  });
+});
+
 export const productController = {
   createProduct,
   getProduct,
@@ -98,4 +110,5 @@ export const productController = {
   updateProduct,
   allProduct,
   singleProduct,
+  paymentProductUpdate,
 };
