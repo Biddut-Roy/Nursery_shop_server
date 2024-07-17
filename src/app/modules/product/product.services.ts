@@ -10,44 +10,40 @@ const createProductIntoDB = async (payload: TProduct) => {
 
 const getAllProductIntoDB = async (query: TIQuery) => {
   try {
-    const { search, filter, sort, page, limit, fields } = query;
+    const { search, filter, page } = query;
 
-    let quer: QueryFilter = {};
+    let Filter: QueryFilter = {};
+
     if (filter) {
-      quer.category = filter;
+      Filter.category = filter;
     }
 
     let mongooseQuery = Product.find();
 
-    // Search
     if (search) {
-      mongooseQuery = mongooseQuery.find({ $text: { $search: search } });
+      const keyword = search.toLowerCase();
+      mongooseQuery = mongooseQuery.find({
+        $or: [
+          { category: { $regex: keyword, $options: 'i' } },
+          { title: { $regex: keyword, $options: 'i' } },
+          { description: { $regex: keyword, $options: 'i' } },
+        ],
+      });
     }
 
     // Filter
     if (filter) {
-      mongooseQuery = mongooseQuery.find(quer);
-    }
-
-    // Sort
-    if (sort) {
-      mongooseQuery = mongooseQuery.sort(sort);
+      mongooseQuery = mongooseQuery.find(Filter);
     }
 
     // Paginate
     const pageNum = page ? parseInt(page, 10) : 1;
-    const limitNum = limit ? parseInt(limit, 10) : 10;
+    const limitNum = 10;
     const skip = (pageNum - 1) * limitNum;
 
     mongooseQuery = mongooseQuery.skip(skip).limit(limitNum);
 
-    // Select specific fields
-    if (fields) {
-      mongooseQuery = mongooseQuery.select(fields.split(',').join(' '));
-    }
-
     const result = await mongooseQuery.exec();
-    // const result = await Product.find();
 
     return result;
   } catch (error) {

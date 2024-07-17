@@ -3,7 +3,6 @@ import { paymentServices } from './payment.services';
 
 const paymentLink = catchAsync(async (req, res, next) => {
   const { amount, currency } = req.body;
-  console.log(req.body);
 
   const result = await paymentServices.paymentGenerate(amount, currency);
 
