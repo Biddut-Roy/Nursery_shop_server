@@ -86,31 +86,30 @@ const singleProductIntoDB = async (id: string) => {
   return result;
 };
 const paymentProductUpdateIntoDB = async (data: TProductUpdateInfo[]) => {
+  const updatedProducts: any[] = [];
+
   try {
-    for (const update of data) {
-      // Find the current document
-      const product = await Product.findById(update._id);
+    const ids = data.map((update) => update._id);
+    const products = await Product.find({ _id: { $in: ids } });
+    const updatesMap = new Map(data.map((update) => [update._id, update.QAT]));
 
-      if (product) {
-        if (product.quantity == null) {
-          console.warn(
-            `Product with _id ${update._id} has a null or undefined quantity`,
-          );
-          continue;
-        }
+    for (const product of products) {
+      const QAT = updatesMap.get(product._id.toString());
 
-        // Update the quantity
-        product.quantity -= update.QAT;
+      if (QAT !== undefined && typeof product.quantity === 'number') {
+        product.quantity -= QAT;
 
         const result = await product.save();
-
-        return result;
+        updatedProducts.push(result);
       } else {
-        console.log(`Product with _id ${update._id} not found`);
+        console.warn(
+          `Product with _id ${product._id} has an invalid quantity: ${product.quantity}`,
+        );
       }
     }
-  } catch (error: unknown) {
-    return error;
+    return updatedProducts;
+  } catch (error) {
+    throw error;
   }
 };
 

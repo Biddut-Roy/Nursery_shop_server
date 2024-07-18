@@ -98,7 +98,7 @@ const paymentProductUpdate = catchAsync(async (req, res, next) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Single Product is retrieved successfully',
+    message: 'CheckOut successfully',
     data: result,
   });
 });
