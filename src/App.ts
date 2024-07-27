@@ -5,11 +5,10 @@ import httpStatus from 'http-status';
 import router from './app/route';
 import globalErrorHandler from './app/middlsware/globalErrorHandler';
 
-// parser
 app.use(express.json());
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: '*', // Allow requests from any origin
     credentials: true,
   }),
 );
