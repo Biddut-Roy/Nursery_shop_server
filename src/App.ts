@@ -3,7 +3,7 @@ const app: Application = express();
 import cors from 'cors';
 import httpStatus from 'http-status';
 import router from './app/route';
-import globalErrorHandler from './app/middlsware/globalErrorHandler';
+import globalErrorHandler from './app/middleware/globalErrorHandler';
 
 app.use(express.json());
 app.use(
