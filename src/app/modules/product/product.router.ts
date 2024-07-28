@@ -15,7 +15,7 @@ router.get('/all', productController.allProduct);
 router.delete('/delete', productController.deleteProduct);
 router.patch(
   '/update',
-  validationRequest(ValidationZod.productZodSchema),
+  validationRequest(ValidationZod.pUpdateZodSchema),
   productController.updateProduct,
 );
 router.get('/single/:id', productController.singleProduct);

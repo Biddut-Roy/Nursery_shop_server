@@ -55,13 +55,15 @@ const deleteProduct = catchAsync(async (req, res, next) => {
 });
 
 const updateProduct = catchAsync(async (req, res, next) => {
+  console.log(req.body);
+
   const result = await productServices.updateProductIntoDB(req?.body);
 
   // function generate response
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Product is Update successfully',
+    message: 'Product Update is successfully',
     data: result,
   });
 });
@@ -98,7 +100,7 @@ const paymentProductUpdate = catchAsync(async (req, res, next) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'CheckOut successfully',
+    message: 'Update Product successfully',
     data: result,
   });
 });

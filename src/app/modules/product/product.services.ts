@@ -64,6 +64,7 @@ const deleteProductIntoDB = async (id: string) => {
 
 const updateProductIntoDB = async (payload: TProduct) => {
   const id = payload._id;
+
   const data = {
     category: payload.category,
     title: payload.title,

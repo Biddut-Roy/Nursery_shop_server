@@ -1,17 +1,13 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
-const app: Application = express();
 import cors from 'cors';
 import httpStatus from 'http-status';
 import router from './app/route';
 import globalErrorHandler from './app/middleware/globalErrorHandler';
 
+const app: Application = express();
 app.use(express.json());
-app.use(
-  cors({
-    origin: '*', // Allow requests from any origin
-    credentials: true,
-  }),
-);
+
+app.use(cors());
 
 // application routes
 app.use('/api/v1', router);
